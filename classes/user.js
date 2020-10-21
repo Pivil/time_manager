@@ -37,12 +37,12 @@ class User {
         });
     };
 
-    update = async(username, email) => {
+    update = async(username, email, id = null) => {
         return new Promise((resolv, reject) => {
             var query = "UPDATE user SET username = ?, email = ? WHERE id = ?";
-
+            var userId = id || this.id;
             pool
-                .execute(query, [username, email, this.id])
+                .execute(query, [username, email, userId])
                 .then(res => {
                     resolv(res);
                 })
@@ -52,12 +52,13 @@ class User {
         });
     };
 
-    delete = async id => {
+    delete = async(id = null) => {
         return new Promise((resolv, reject) => {
             var query = "DELETE FROM user WHERE id = ?";
 
+            var userId = id || this.id;
             pool
-                .execute(query, [id])
+                .execute(query, [userId])
                 .then(res => {
                     resolv(res);
                 })

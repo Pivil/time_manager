@@ -53,8 +53,9 @@ routes.user = require("./controllers/user_controller");
 
 app.post("/api/:role(employee|manager|generalManager)/", routes.user.create);
 app.get("/api/users/:id", routes.user.show);
-app.put("/api/users/", routes.user.update);
-app.delete("/api/users/:id", routes.user.delete);
+app.put("/api/users/(:id?)", routes.user.update);
+
+app.delete("/api/users/(:id?)", routes.user.deleteUser);
 
 app.listen(port, function() {
     console.log("App listening on port " + port);

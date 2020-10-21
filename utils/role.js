@@ -1,3 +1,5 @@
+var pool = require("../utils/sql").pool;
+
 var getRoleId = role => {
     switch (role) {
         case "employee":
