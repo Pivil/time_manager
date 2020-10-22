@@ -58,9 +58,20 @@ app.get("/api/users/:id", routes.user.show);
 app.put("/api/users/(:id?)", routes.user.update);
 app.delete("/api/users/(:id?)", routes.user.deleteUser);
 
+// TEAMS
+app.post("/api/team/", routes.user.addToTeam);
+app.get(
+    "/api/users/team/:type(weekly|daily)",
+    routes.workingTime.getTeamAverageWorkingTime
+);
+
 // WORKING TIMES
 app.post("/api/users/arrivalTime", routes.workingTime.create);
-app.post("/api/users/departure", routes.workingTime.departure);
+// app.post("/api/users/departure", routes.workingTime.departure);
+app.get(
+    "/api/workingTime/:type(weekly|daily)/:id",
+    routes.workingTime.getUserWorkingTime
+);
 
 app.listen(port, function() {
     console.log("App listening on port " + port);

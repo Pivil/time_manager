@@ -28,7 +28,7 @@ class User {
                         user.username = data.username;
                         user.email = data.email;
                         user.role = data.role;
-                        user.group = data.group;
+                        user.team = data.team;
                         resolv(user);
                     }
                 })
@@ -69,6 +69,33 @@ class User {
         });
     };
 
+    addToTeam = async userId => {
+        return new Promise((resolv, reject) => {
+            var query = "INSERT INTO team(id, userId) VALUES (?, ?)";
+            pool
+                .execute(query, [this.team, userId])
+                .then(res => {
+                    resolv(res);
+                })
+                .catch(err => {
+                    reject(err);
+                });
+        });
+    };
+
+    getTeam = async(id, team) => {
+        return new Promise((resolv, reject) => {
+            var query = "SELECT team FROM user WHERE id = ?";
+            pool
+                .execute(query, [this.id])
+                .then(res => {
+                    resolv(res[0][0].team);
+                })
+                .catch(err => {
+                    reject(err);
+                });
+        });
+    };
     static get = async id => {
         return new Promise((resolv, reject) => {
             var query = "SELECT * FROM user WHERE id = ?";
@@ -82,7 +109,7 @@ class User {
                     user.username = data.username;
                     user.email = data.email;
                     user.role = data.role;
-                    user.group = data.group;
+                    user.team = data.team;
                     resolv(user);
                 })
                 .catch(err => {

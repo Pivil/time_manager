@@ -49,7 +49,6 @@ var deleteUser = async(req, res) => {
         }
         res.status(200).send("Deleted");
     } catch (err) {
-        console.log(err);
         res.status(400).send(err);
     }
 };
@@ -78,10 +77,27 @@ var update = async(req, res) => {
     }
 };
 
+var addToTeam = async(req, res) => {
+    try {
+        var token = req.headers.token,
+            userId = req.body.userId;
+
+        var user = await new User(token);
+        if (user.role == 1) {
+            await user.addToTeam(userId);
+        } else {
+            throw { status: 0, message: "User is not a manager" };
+        }
+        res.status(200).send("Added to team");
+    } catch (err) {
+        res.status(400).send(err);
+    }
+};
 module.exports = {
     create: create,
     get: get,
     update: update,
     deleteUser: deleteUser,
-    show: show
+    show: show,
+    addToTeam
 };
