@@ -50,12 +50,17 @@ app.use(bodyParser.json());
 
 var routes = {};
 routes.user = require("./controllers/user_controller");
+routes.workingTime = require("./controllers/workingTime_controller.js");
 
+// USERS
 app.post("/api/:role(employee|manager|generalManager)/", routes.user.create);
 app.get("/api/users/:id", routes.user.show);
 app.put("/api/users/(:id?)", routes.user.update);
-
 app.delete("/api/users/(:id?)", routes.user.deleteUser);
+
+// WORKING TIMES
+app.post("/api/users/arrivalTime", routes.workingTime.create);
+app.post("/api/users/departure", routes.workingTime.departure);
 
 app.listen(port, function() {
     console.log("App listening on port " + port);

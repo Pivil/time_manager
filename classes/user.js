@@ -28,6 +28,7 @@ class User {
                         user.username = data.username;
                         user.email = data.email;
                         user.role = data.role;
+                        user.group = data.group;
                         resolv(user);
                     }
                 })
@@ -61,6 +62,28 @@ class User {
                 .execute(query, [userId])
                 .then(res => {
                     resolv(res);
+                })
+                .catch(err => {
+                    reject(err);
+                });
+        });
+    };
+
+    static get = async id => {
+        return new Promise((resolv, reject) => {
+            var query = "SELECT * FROM user WHERE id = ?";
+
+            pool
+                .execute(query, [id])
+                .then(async res => {
+                    var data = res[0][0];
+                    var user = await new User(data.token);
+                    user.id = data.id;
+                    user.username = data.username;
+                    user.email = data.email;
+                    user.role = data.role;
+                    user.group = data.group;
+                    resolv(user);
                 })
                 .catch(err => {
                     reject(err);
