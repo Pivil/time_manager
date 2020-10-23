@@ -93,11 +93,12 @@ var addToTeam = async(req, res) => {
         res.status(400).send(err);
     }
 };
+
 module.exports = {
     create: create,
     get: get,
     update: update,
     deleteUser: deleteUser,
     show: show,
-    addToTeam
+    addToTeam: addToTeam
 };

@@ -38,6 +38,27 @@ class User {
         });
     };
 
+    clocks = async() => {
+        return new Promise((resolv, reject) => {
+            var query = "SELECT * FROM clock WHERE userId = ? AND status = 1";
+
+            pool.execute(query, [this.id]).then(res => {
+                var id;
+                if (res[0].length == 0) {
+                    query =
+                        "INSERT INTO clock (userId, clock_in, status) VALUES (?, NOW(), 1)";
+                    id = this.id;
+                } else {
+                    query = "UPDATE clock SET clock_out = NOW(), status = 0 WHERE id = ?";
+                    id = res[0][0].id;
+                }
+                pool.execute(query, [id]).then(res => {
+                    resolv(res);
+                });
+            });
+        });
+    };
+
     update = async(username, email, id = null) => {
         return new Promise((resolv, reject) => {
             var query = "UPDATE user SET username = ?, email = ? WHERE id = ?";
@@ -139,7 +160,8 @@ class User {
 
     static show = async id => {
         return new Promise((resolv, reject) => {
-            var query = "SELECT id, username, email, role FROM user WHERE id = ?";
+            var query =
+                "SELECT id, username, email, role, team FROM user WHERE id = ?";
 
             pool
                 .execute(query, [id])
