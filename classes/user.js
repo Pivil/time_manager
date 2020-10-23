@@ -117,10 +117,30 @@ class User {
                 });
         });
     };
+
+    promote = async id => {
+        return new Promise((resolv, reject) => {
+            var query =
+                "UPDATE user SET role = 1, team = (SELECT * FROM (SELECT max(team) + 1 FROM user)as tmp)\
+                WHERE id = ? and role = 0";
+
+            pool
+                .execute(query, [id])
+                .then(res => {
+                    console.log(res[0]);
+                    if (res[0].info.includes(" Changed: 0"))
+                        reject({ status: 0, message: "User is not an employee" });
+                    resolv(res[0]);
+                })
+                .catch(err => {
+                    reject(err);
+                });
+        });
+    };
+
     static get = async id => {
         return new Promise((resolv, reject) => {
             var query = "SELECT * FROM user WHERE id = ?";
-
             pool
                 .execute(query, [id])
                 .then(async res => {

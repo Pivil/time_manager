@@ -58,6 +58,7 @@ app.post("/api/:role(employee|manager|generalManager)/", routes.user.create);
 app.get("/api/users/:id", routes.user.show);
 app.put("/api/users/(:id?)", routes.user.update);
 app.delete("/api/users/(:id?)", routes.user.deleteUser);
+app.put("/api/users/promote/(:id?)", routes.user.promote);
 
 // CLOCKS
 app.post("/api/clocks", routes.clock.clocks);

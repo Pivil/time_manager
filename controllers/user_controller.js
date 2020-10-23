@@ -94,11 +94,30 @@ var addToTeam = async(req, res) => {
     }
 };
 
+var promote = async(req, res) => {
+    try {
+        var token = req.headers.token,
+            userId = req.params.id;
+
+        var user = await new User(token);
+
+        if (user.role == 2) {
+            await user.promote(userId);
+        } else {
+            throw { status: 0, message: "User is not a general manager" };
+        }
+        res.status(200).send("User promoted to manager");
+    } catch (err) {
+        res.status(400).send(err);
+    }
+};
+
 module.exports = {
     create: create,
     get: get,
     update: update,
     deleteUser: deleteUser,
     show: show,
-    addToTeam: addToTeam
+    addToTeam: addToTeam,
+    promote: promote
 };
