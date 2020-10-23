@@ -62,6 +62,7 @@ app.delete("/api/users/(:id?)", routes.user.deleteUser);
 // CLOCKS
 app.post("/api/clocks", routes.clock.clocks);
 app.get("/api/clock/:type(weekly|daily)/:id", routes.clock.getUserHours);
+app.get("/api/clock/team/:type(weekly|daily)", routes.clock.getTeamHours);
 
 // TEAMS
 app.post("/api/team/", routes.user.addToTeam);
