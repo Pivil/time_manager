@@ -80,9 +80,10 @@ var update = async(req, res) => {
 var addToTeam = async(req, res) => {
     try {
         var token = req.headers.token,
-            userId = req.body.userId;
+            userId = req.params.userId;
 
         var user = await new User(token);
+        console.log(user);
         if (user.role == 1) {
             await user.addToTeam(userId);
         } else {

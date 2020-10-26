@@ -46,6 +46,21 @@ class WorkingTime {
         });
     };
 
+    static edit = async(id, arrival, departure) => {
+        return new Promise((resolv, reject) => {
+            var query =
+                "UPDATE workingTime SET arrival = ?, departure = ? WHERE userId = ?";
+            pool
+                .execute(query, [arrival, departure, id])
+                .then(res => {
+                    resolv(res);
+                })
+                .catch(err => {
+                    reject(err);
+                });
+        });
+    };
+
     static show = async id => {
         return new Promise((resolv, reject) => {
             var query = "SELECT * FROM clock WHERE userId = ?";

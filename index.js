@@ -54,7 +54,10 @@ routes.workingTime = require("./controllers/workingTime_controller");
 routes.clock = require("./controllers/clock_controller");
 
 // USERS
-app.post("/api/:role(employee|manager|generalManager)/", routes.user.create);
+app.post(
+    "/api/users/:role(employee|manager|generalManager)/",
+    routes.user.create
+);
 app.get("/api/users/:id", routes.user.show);
 app.put("/api/users/(:id?)", routes.user.update);
 app.delete("/api/users/(:id?)", routes.user.deleteUser);
@@ -66,15 +69,11 @@ app.get("/api/clock/:type(weekly|daily)/:id", routes.clock.getUserHours);
 app.get("/api/clock/team/:type(weekly|daily)", routes.clock.getTeamHours);
 
 // TEAMS
-app.post("/api/team/", routes.user.addToTeam);
-app.get(
-    "/api/users/team/:type(weekly|daily)",
-    routes.workingTime.getTeamAverageWorkingTime
-);
+app.post("/api/team/:userId", routes.user.addToTeam);
 
 // WORKING TIMES
-app.post("/api/users/arrivalTime", routes.workingTime.create);
-app.post("/api/users/departure", routes.workingTime.departure);
+app.post("/api/workingTime/create/:userId", routes.workingTime.create);
+app.put("/api/workingTime/edit/:userId", routes.workingTime.edit);
 
 app.listen(port, function() {
     console.log("App listening on port " + port);
