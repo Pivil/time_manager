@@ -5,6 +5,6 @@ module.exports = {
         port: 8889,
         user: "root",
         password: "root",
-        database: "test"
+        database: "time_manager"
     }
 };

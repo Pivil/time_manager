@@ -22,7 +22,7 @@ class WorkingTime {
                         workingTime.arrival = data.arrival;
                         workingTime.departure = data.departure;
                         workingTime.userId = data.userId;
-                        resolv(user);
+                        resolv(workingTime);
                     }
                 })
                 .catch(err => {

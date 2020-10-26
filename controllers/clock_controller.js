@@ -1,38 +1,33 @@
 const User = require("../classes/user");
 const Clock = require("../classes/clock");
 
-var create = async(req, res) => {
-    try {
-        var arrival = req.body.arrival,
-            departure = req.body.departure,
-            token = req.headers.token,
-            userId = req.params.userId;
+getUserHours = async (req, res) => {
+    var token = req.headers.token,
+        id = req.params.id,
+        type = req.params.type,
+        from = req.body.from,
+        to = req.body.to;
 
         var user = await new User(token);
-        await WorkingTime.create(userId, arrival, departure);
-        res.status(200).send("Working time created");
+
+        if (user.role == 1 || user.role == 2) {
+            var workedTime = Clock.getUserHours(id, type, from, to);
+        }
+}
+
+clocks = async (req, res) => {
+    try {
+    var token = req.headers.token;
+
+    var user = await new User(token);
+    var result = await user.clocks();
+        res.status(200).send(result);
     } catch (err) {
         res.status(400).send(err);
     }
-};
-
-var edit = async(req, res) => {
-    try {
-        var arrival = req.body.arrival,
-            departure = req.body.departure,
-            token = req.headers.token,
-            userId = req.params.userId;
-
-        var user = await new User(token);
-        await WorkingTime.edit(userId, arrival, departure);
-        res.status(200).send("Working time updated");
-    } catch (err) {
-        console.log(err);
-        res.status(400).send(err);
-    }
-};
+}
 
 module.exports = {
-    create: create,
-    edit: edit
+    getUserHours:getUserHours,
+    clocks: clocks
 };
