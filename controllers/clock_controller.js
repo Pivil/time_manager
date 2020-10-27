@@ -22,6 +22,27 @@ getUserHours = async (req, res) => {
     }
 }
 
+getTeamHours = async (req, res) => {
+    try {
+    var token = req.headers.token,
+        id = req.params.id,
+        type = req.params.type,
+        from = req.body.from,
+        to = req.body.to;
+
+        var user = await new User(token);
+
+        if (user.role == 1 || user.role == 2) {
+            var workedTime = await Clock.getTeamHours(user.team, type, from, to);
+            res.status(200).send(workedTime);
+        } else {
+            throw { status: 0, message: "User is not a manager" };
+        }
+    } catch (err) {
+        res.status(400).send(err);
+    }
+}
+
 clocks = async (req, res) => {
     try {
     var token = req.headers.token;
@@ -35,6 +56,7 @@ clocks = async (req, res) => {
 }
 
 module.exports = {
-    getUserHours:getUserHours,
+    getUserHours: getUserHours,
+    getTeamHours: getTeamHours,
     clocks: clocks
 };

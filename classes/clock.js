@@ -66,6 +66,42 @@ class Clock {
         })
     }
 
+    static getTeamHours = async(teamId, type, from, to ) => {
+        return new Promise((resolv, reject) => {
+            var query;
+            if (type == "weekly") {
+                query = 
+                "SELECT (SELECT count(t.userId) FROM time_manager.team t LEFT JOIN time_manager.user u ON t.userId = u.id WHERE t.id = ?) as workers, SUM(TIMESTAMPDIFF(MINUTE, clock_in, clock_out)) as minutes,  CONCAT(YEAR(clock_in), '-', WEEKOFYEAR(clock_in)) as date\
+                FROM clock c\
+                LEFT JOIN time_manager.team t on c.userId = t.userId\
+                WHERE t.id = ?\
+                  AND clock_in >= ?\
+                  AND clock_out <= ?\
+                GROUP BY date";
+            } else if (type == "daily") {
+                query = 
+                "SELECT (SELECT count(t.userId) FROM time_manager.team t LEFT JOIN time_manager.user u ON t.userId = u.id WHERE t.id = ?) as workers, SUM(TIMESTAMPDIFF(MINUTE, clock_in, clock_out)) as minutes, CONCAT(YEAR(clock_in), '-', MONTH(clock_in), '-', DAY(clock_in)) as date\
+                FROM clock c\
+                LEFT JOIN time_manager.team t on c.userId = t.userId\
+                WHERE t.id = ?\
+                  AND clock_in >= ?\
+                  AND clock_out <= ?\
+                GROUP BY date";
+            }
+
+            pool.execute(query, [teamId, teamId, from, to])
+            .then(res => {
+                var data = res[0];
+                var result = {};
+                data.forEach(row => {
+                    result[row.date] = row.minutes / row.workers;
+                })
+
+                resolv(result);
+            })
+        })
+    }
+
     
 }
 
