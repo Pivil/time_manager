@@ -2,6 +2,7 @@ const User = require("../classes/user");
 const Clock = require("../classes/clock");
 
 getUserHours = async (req, res) => {
+    try {
     var token = req.headers.token,
         id = req.params.id,
         type = req.params.type,
@@ -11,8 +12,14 @@ getUserHours = async (req, res) => {
         var user = await new User(token);
 
         if (user.role == 1 || user.role == 2) {
-            var workedTime = Clock.getUserHours(id, type, from, to);
+            var workedTime = await Clock.getUserHours(id, type, from, to);
+            res.status(200).send(workedTime);
+        } else {
+            throw { status: 0, message: "User is not a manager" };
         }
+    } catch (err) {
+        res.status(400).send(err);
+    }
 }
 
 clocks = async (req, res) => {

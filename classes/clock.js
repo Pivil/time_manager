@@ -32,12 +32,12 @@ class Clock {
         });
     };
 
-    getUserHours = async(userId, type, from, to ) => {
+    static getUserHours = async(userId, type, from, to ) => {
         return new Promise((resolv, reject) => {
             var query;
             if (type == "weekly") {
                 query = 
-                "SELECT SUM(TIMESTAMPDIFF(MINUTE, clock_in, clock_out)) as minutes, WEEKOFYEAR(clock_in) as date\
+                "SELECT SUM(TIMESTAMPDIFF(MINUTE, clock_in, clock_out)) as minutes,  CONCAT(YEAR(clock_in), '-', WEEKOFYEAR(clock_in)) as date\
                 FROM clock\
                 WHERE userId = ?\
                   AND clock_in >= ?\
@@ -45,7 +45,7 @@ class Clock {
                 GROUP BY date";
             } else if (type == "daily") {
                 query = 
-                "SELECT SUM(TIMESTAMPDIFF(MINUTE, clock_in, clock_out)) as minutes, DATE(clock_in) as date\
+                "SELECT SUM(TIMESTAMPDIFF(MINUTE, clock_in, clock_out)) as minutes, CONCAT(YEAR(clock_in), '-', MONTH(clock_in), '-', DAY(clock_in)) as date\
                 FROM clock\
                 WHERE userId = ?\
                   AND clock_in >= ?\
@@ -55,7 +55,13 @@ class Clock {
 
             pool.execute(query, [userId, from, to])
             .then(res => {
-                console.log(res);
+                var data = res[0];
+                var result = {};
+                data.forEach(row => {
+                    result[row.date] = row.minutes
+                })
+
+                resolv(result);
             })
         })
     }
