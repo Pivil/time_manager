@@ -92,9 +92,9 @@ describe("update", () => {
             var username = generateRandom(),
                 email = generateRandom();
 
-            await user.update(username, email, 9);
+            await user.update(username, email, 2);
 
-            getUser(9).then(user => {
+            getUser(2).then(user => {
                 expect(user.username).to.equal(username);
                 expect(user.email).to.equal(email);
                 expect(user.role).to.equal("0");

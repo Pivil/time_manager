@@ -22,5 +22,5 @@ describe("Chai-Mocha Unit Test", function() {
     });
 
     importTest("User", "./user");
-    importTest("Clock", "./clock");
+    // importTest("Clock", "./clock");
 });
