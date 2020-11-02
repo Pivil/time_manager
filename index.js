@@ -65,6 +65,6 @@ app.post("/api/team/:userId", routes.user.addToTeam);
 app.post("/api/workingTime/create/:userId", routes.workingTime.create);
 app.put("/api/workingTime/edit/:userId", routes.workingTime.edit);
 
-app.listen(port, function() {
+app.listen(process.env.PORT || 3000, function() {
     console.log("App listening on port " + port);
 });
