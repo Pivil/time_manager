@@ -66,6 +66,6 @@ app.post("/api/workingTime/create/:userId", routes.workingTime.create);
 app.put("/api/workingTime/edit/:userId", routes.workingTime.edit);
 
 app.listen(process.env.PORT || 3000, function() {
-    console.log("OUCDOUZFUOZOER");
+    console.log("it works !");
     console.log("App listening on port " + port);
 });
