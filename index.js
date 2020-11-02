@@ -6,16 +6,6 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
 
-//* SWAGGER */
-// const swaggerUi = require("swagger-ui-express");
-// const YAML = require("yamljs");
-// const swaggerDocument = YAML.load("./app/swagger.yaml");
-// app.use(
-//   "/notifadz/api-docs",
-//   swaggerUi.serve,
-//   swaggerUi.setup(swaggerDocument, options)
-// );
-
 //* CACHE */
 var cache = require("memory-cache");
 let port = config.expressPort;
@@ -26,7 +16,7 @@ var options = {
 token.initCache();
 
 app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", req.get("origin")); //req.get('origin')
+    res.header("Access-Control-Allow-Origin", req.get("origin"));
     res.header("Access-Control-Allow-Credentials", true);
     res.header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT");
     res.header(
