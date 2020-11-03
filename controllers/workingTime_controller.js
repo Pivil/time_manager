@@ -33,7 +33,20 @@ var edit = async(req, res) => {
     }
 };
 
+var get = async(req, res) => {
+    try {
+        var userId = req.params.userId;
+
+        var wt = await WorkingTime.get(userId);
+        res.status(200).send(wt);
+    } catch (err) {
+        console.log(err);
+        res.status(400).send(err);
+    }
+};
+
 module.exports = {
     create: create,
-    edit: edit
+    edit: edit,
+    get: get
 };

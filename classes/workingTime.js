@@ -61,9 +61,9 @@ class WorkingTime {
         });
     };
 
-    static show = async id => {
+    static get = async id => {
         return new Promise((resolv, reject) => {
-            var query = "SELECT * FROM clock WHERE userId = ?";
+            var query = "SELECT * FROM workingTimes WHERE userId = ?";
 
             pool
                 .execute(query, [id])

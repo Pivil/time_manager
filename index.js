@@ -54,11 +54,11 @@ app.get("/api/users/role/(:id?)", routes.user.getRole);
 app.put("/api/users/(:id?)", routes.user.update);
 app.delete("/api/users/(:id?)", routes.user.deleteUser);
 app.put("/api/users/promote/(:id?)", routes.user.promote);
-
+app.get("/api/users/", routes.user.get);
 // CLOCKS
 app.post("/api/clocks", routes.clock.clocks);
-app.get("/api/clock/:type(weekly|daily)/:id", routes.clock.getUserHours);
-app.get("/api/clock/team/:type(weekly|daily)", routes.clock.getTeamHours);
+app.get("/api/clock/:type(weekly|daily)/(:id?)", routes.clock.getUserHours);
+app.get("/api/clock/team/:type(weekly|daily)/(:id?)", routes.clock.getTeamHours);
 
 // TEAMS
 app.post("/api/team/:userId", routes.user.addToTeam);
@@ -67,6 +67,7 @@ app.get("/api/team/info/(:teamId?)", routes.user.getTeamInfo);
 // WORKING TIMES
 app.post("/api/workingTime/create/:userId", routes.workingTime.create);
 app.put("/api/workingTime/edit/:userId", routes.workingTime.edit);
+app.get("/api/workingTime/(:userId?)", routes.workingTime.get);
 
 app.listen(process.env.PORT || 3000, function() {
     console.log("it works !!");

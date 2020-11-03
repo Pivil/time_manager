@@ -146,6 +146,8 @@ var promote = async(req, res) => {
     }
 };
 
+var getCurrentId = 
+
 module.exports = {
     create: create,
     get: get,
