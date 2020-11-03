@@ -19,7 +19,7 @@ token.initCache();
 app.use(function(req, res, next) {
 app.options('*', cors())
 
-    res.header("Access-Control-Allow-Origin", req.get("origin"));
+    res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Credentials", true);
     res.header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT");
     res.header(
