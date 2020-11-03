@@ -24,6 +24,25 @@ var get = async(req, res) => {
     }
 };
 
+var getTeamInfo = async(req, res) => {
+    try {
+        var token = req.headers.token,
+            teamId = req.params.teamId;
+
+        var user = await new User(token);
+        if (user.role == 1) {
+            var result = await user.getTeamInfo(user.team);
+        } else if (user.role == 2) {
+            var result = await user.getTeamInfo(teamId);
+        } else {
+            throw { status: 0, message: "User doesn't have access to this" };
+        }
+        res.status(200).send(result);
+    } catch (err) {
+        res.status(400).send(err);
+    }
+}
+
 var show = async(req, res) => {
     try {
         var id = req.params.id;
@@ -83,7 +102,6 @@ var addToTeam = async(req, res) => {
             userId = req.params.userId;
 
         var user = await new User(token);
-        console.log(user);
         if (user.role == 1) {
             await user.addToTeam(userId);
         } else {
@@ -94,6 +112,21 @@ var addToTeam = async(req, res) => {
         res.status(400).send(err);
     }
 };
+
+var getRole = async(req, res) => {
+    try {
+        var id = req.params.id,
+            token = req.headers.token;
+
+        var user = await new User(token);
+        var role = await user.getRole(id);
+        res.status(200).send(role);
+
+    } catch (err) {
+        console.log(err);
+        res.status(400).send(err);
+    }
+}
 
 var promote = async(req, res) => {
     try {
@@ -120,5 +153,7 @@ module.exports = {
     deleteUser: deleteUser,
     show: show,
     addToTeam: addToTeam,
-    promote: promote
+    promote: promote,
+    getRole: getRole,
+    getTeamInfo: getTeamInfo
 };

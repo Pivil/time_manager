@@ -82,6 +82,7 @@ class User {
             pool
                 .execute(query, [userId])
                 .then(res => {
+                    cache.
                     resolv(res);
                 })
                 .catch(err => {
@@ -138,6 +139,57 @@ class User {
         });
     };
 
+    getTeamInfo = async(teamId) => {
+        return new Promise((resolv, reject) => {
+            var query = "SELECT * FROM user u LEFT JOIN team t ON u.id = t.userId WHERE t.id = ?";
+            pool
+                .execute(query, [teamId])
+                .then(res => {
+                    var data = res[0];
+                    var res = {};
+                    data.forEach(row => {
+                        res[row.userId] = row;
+                    })
+                    resolv(res);
+                })
+                .catch(err => {
+                    reject(err);
+                })
+        })
+    };
+
+    getRole = async id => {
+        return new Promise((resolv, reject) => {
+        var userId = id || this.id;
+        var query = "SELECT role FROM user WHERE id = ?";
+
+        pool
+            .execute(query, [userId])
+            .then(res => {
+                var role = res[0][0].role;
+                var label;
+                switch (role) {
+                    case 0:
+                        label = "Employee";
+                        break;
+                    case 1:
+                        label = "Manager";
+                        break;
+                    case 2: 
+                        label = "General Manager";
+                        break;
+                    default:
+                        break;
+                }
+                resolv({"role": role, "label": label});
+            })
+            .catch(err => {
+                reject(err);
+            })
+        })
+    }
+
+
     static get = async id => {
         return new Promise((resolv, reject) => {
             var query = "SELECT * FROM user WHERE id = ?";
@@ -159,6 +211,7 @@ class User {
         });
     };
 
+
     static create = async(username, email, role) => {
         return new Promise((resolv, reject) => {
             var token = randomstring.generate();
@@ -170,6 +223,7 @@ class User {
             pool
                 .execute(query, [username, email, token, userRole])
                 .then(res => {
+                    cache.put(token, res[0].insertId);
                     resolv(res);
                 })
                 .catch(err => {

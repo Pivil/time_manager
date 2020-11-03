@@ -27,7 +27,7 @@ app.use(function(req, res, next) {
 
     if (token.checkToken(req.headers.token)) next();
     else {
-        res.status(200).send({ error: "bad token" }); //bad token
+        res.status(404).send({ error: "bad token" }); //bad token
     }
 });
 
@@ -49,6 +49,8 @@ app.post(
     routes.user.create
 );
 app.get("/api/users/:id", routes.user.show);
+app.get("/api/users/role/(:id?)", routes.user.getRole);
+
 app.put("/api/users/(:id?)", routes.user.update);
 app.delete("/api/users/(:id?)", routes.user.deleteUser);
 app.put("/api/users/promote/(:id?)", routes.user.promote);
@@ -60,6 +62,7 @@ app.get("/api/clock/team/:type(weekly|daily)", routes.clock.getTeamHours);
 
 // TEAMS
 app.post("/api/team/:userId", routes.user.addToTeam);
+app.get("/api/team/info/(:teamId?)", routes.user.getTeamInfo);
 
 // WORKING TIMES
 app.post("/api/workingTime/create/:userId", routes.workingTime.create);
