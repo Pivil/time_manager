@@ -64,7 +64,7 @@ class WorkingTime {
     static get = async id => {
         return new Promise((resolv, reject) => {
             var query = "SELECT * FROM workingTimes WHERE userId = ?";
-
+            
             pool
                 .execute(query, [id])
                 .then(res => {

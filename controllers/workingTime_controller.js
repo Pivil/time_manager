@@ -35,8 +35,13 @@ var edit = async(req, res) => {
 
 var get = async(req, res) => {
     try {
-        var userId = req.params.userId;
+        var userId = req.params.userId,
+            token = req.headers.token;
 
+        if (!userId) {
+            var user = await new User(token);
+            userId = user.id;
+        }
         var wt = await WorkingTime.get(userId);
         res.status(200).send(wt);
     } catch (err) {
