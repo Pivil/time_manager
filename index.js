@@ -1,5 +1,6 @@
 const config = require("./config");
 const token = require("./utils/token");
+var cors = require('cors')
 
 //* EXPRESS */
 const express = require("express");
@@ -15,9 +16,8 @@ var options = {
 
 token.initCache();
 
-
+app.use(cors());
 app.use(function(req, res, next) {
-app.options('*', cors())
 
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Credentials", true);
