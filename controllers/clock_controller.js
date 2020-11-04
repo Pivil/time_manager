@@ -53,11 +53,11 @@ getTeamHours = async (req, res) => {
 
 clocks = async (req, res) => {
     try {
-    var token = req.headers.token;
+        var token = req.headers.token;
 
-    var user = await new User(token);
-    var result = await user.clocks();
-        res.status(200).send(result);
+        var user = await new User(token);
+        var result = await user.clocks();
+        res.status(200).send({status: 1});
     } catch (err) {
         res.status(400).send(err);
     }

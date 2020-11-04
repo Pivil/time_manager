@@ -49,9 +49,11 @@ class User {
                         "INSERT INTO clock (userId, clock_in, status) VALUES (?, NOW(), 1)";
                     id = this.id;
                 } else {
+                    console.log(res[0][0])
                     query = "UPDATE clock SET clock_out = NOW(), status = 0 WHERE id = ?";
                     id = res[0][0].id;
                 }
+                console.log(id);
                 pool.execute(query, [id]).then(res => {
                     resolv(res);
                 });
