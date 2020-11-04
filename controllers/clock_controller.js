@@ -10,6 +10,7 @@ getUserHours = async (req, res) => {
         to = req.body.to;
 
         var user = await new User(token);
+        console.log('coucou');
 
         if (user.role == 1) {
             var workedTime = await Clock.getUserHours(user.team, type, from, to);
